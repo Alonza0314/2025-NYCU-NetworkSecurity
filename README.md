@@ -33,7 +33,7 @@
 ## Clone the repo
 
 ```bash
-git clone https://github.com/Alonza0314/2025-NetworkSecurity.git
+git clone https://github.com/Alonza0314/2025-NYCU-NetworkSecurity.git
 ```
 
 ## Homeworks
