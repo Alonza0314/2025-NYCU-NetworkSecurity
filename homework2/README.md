@@ -10,13 +10,13 @@ make
 ## Encrypt
 
 ```bash
-./build/fileCrypt -i <inputFile> -o <outFile>
+./build/fileCrypt encrypt -i <inputFile> -o <outFile> [-k <64-hex-key>]
 ```
 
 ## Decrypt
 
 ```bash
-./build/fileCrypt -i <inputFile> -o <outFile> -k <key>
+./build/fileCrypt decrypt -i <inputFile> -o <outFile> -k <64-hex-key>
 ```
 
 ## Description
@@ -40,6 +40,14 @@ make
     - Decryption fails if the key, nonce, or data is invalid/tampered (authentication error).
     - Writes the recovered plaintext to the specified output file and logs helpful messages.
 
+## Feature
+
+- AES-256 key (32 bytes) for symmetric encryption
+- GCM mode (AEAD) for confidentiality and integrity (auth tag included)
+- Random per-file nonce, prefixed to output for stateless decryption
+- Optional random key generation when no key is provided (printed as hex)
+- Simple CLI with input/output paths and hex key handling
+
 ## Demo
 
 1. Prepare a plaintext.txt
@@ -50,6 +58,6 @@ make
 
     ![ciphertext](./images/ciphertext.png)
 
-3. Decrypt from ciphertxt.txt as newPlaintext.txt
+3. Decrypt from ciphertext.txt as newPlaintext.txt
 
     ![newPlaintext](./images/newPlaintext.png)
