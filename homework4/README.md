@@ -13,18 +13,18 @@
 
 - ApacheMD5
 
-    | User | Cracked |
-    | - | - |
-    | admin | KKKKKKK |
-    | tomcat | tivoli |
-    | xampp | |
-    | server_admin | |
-    | demo | microsoft |
-    | QCC | iforget |
-    | cxsdk | electric |
-    | ovwebusr | 77777777 |
-    | role1 | |
-    | j2deployer | |
+    | User | Cracked | Method |
+    | - | - | - |
+    | admin | KKKKKKK | rockyou |
+    | tomcat | tivoli | rockyou |
+    | xampp | | |
+    | server_admin | | |
+    | demo | microsoft | rockyou |
+    | QCC | iforget | rockyou |
+    | cxsdk | electric | rockyou |
+    | ovwebusr | 77777777 | rockyou |
+    | role1 | | |
+    | j2deployer | | |
 
 ## P3Secure
 
@@ -64,18 +64,18 @@ attack.waynechiu.cc:3022
 
 - SHA512
 
-    |User | Password |
-    | - | - |
-    | postfix | password |
-    | oracle | whatever |
-    | webmaster| |
-    | tcpdump | |
-    | linaro | |
-    | hplip | love12 |
-    | unscd | !@#$%^& |
-    | zabbix | vassiliki |
-    | omsagent | |
-    | xpdb | |
+    |User | Password | Method |
+    | - | - | - |
+    | postfix | password | rockyou |
+    | oracle | whatever | rockyou |
+    | webmaster| | |
+    | tcpdump | | |
+    | linaro | | |
+    | hplip | love12 | |
+    | unscd | !@#$%^& | |
+    | zabbix | vassiliki | |
+    | omsagent | | |
+    | xpdb | | |
 
 ## P3Windows
 
