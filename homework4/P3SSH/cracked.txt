@@ -1,0 +1,5 @@
+oracle:password
+postfix:whatever
+hplip:love12
+unscd:!@#$%^&
+zabbix:vassiliki
