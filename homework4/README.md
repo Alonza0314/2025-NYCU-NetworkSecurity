@@ -4,10 +4,10 @@
 
 - [rockyou.txt](https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt)
 
-```bash
-cd 2025-NetworkSecurity/homework4
-curl -L -o rockyou.txt.gz "https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt"
-```
+    ```bash
+    cd 2025-NetworkSecurity/homework4
+    curl -L -o rockyou.txt.gz "https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt"
+    ```
 
 ## P3HTTP
 
@@ -81,6 +81,37 @@ attack.waynechiu.cc:3022
 
 attack.waynechiu.cc:3089
 
+- CMD
+
+    ```bash
+    impacket-secretsdump -sam SAM -system SYSTEM LOCAL
+    gunzip -c /usr/share/wordlists/rockyou.txt.gz > /tmp/rockyou.txt
+    ```
+
+    ```bash
+    john full_hashes.txt --format=NT --wordlist=/tmp/rockyou.txt
+    john full_hashes.txt --format=NT --wordlist=/usr/share/set/src/fasttrack/wordlist.txt
+    john full_hashes.txt --format=NT --wordlist=/usr/share/metasploit-framework/data/wordlists/default_pass_for_services_unhash.txt
+    john full_hashes.txt --format=NT --show
+    ```
+
+| User | Password | Dict |
+| - | - | - |
+| Administrator | 123123123 | rockyou |
+| Guest | (no-pwd) | rockyou |
+| DefaultAccount | (no-pwd) | rockyou |
+| WDAGUtilityAccount | |
+| db2admin | Manager | rockyou |
+| sa | sqlsqlsqlsql | fasttrack/wordlist |
+| owner | | |
+| secure | | |
+| admin | trinity | rockyou |
+| demo | | |
+| IEUser | personales | |
+| nmt | ironport | metasploit-framework/data/wordlists/default_pass_for_services_unhash |
+| user | | |
+| john | trabajador | |
+
 ## Contribution Table
 
 | Student ID | Works | Percentage |
@@ -89,4 +120,4 @@ attack.waynechiu.cc:3089
 | 313581047 | golang coding & multi-routine architecture | 20% |
 | 313581038 | hash cracking & test file writing | 20% |
 | 313581055 | hash cracking & cracking idea checking & report writing | 20% |
-| 412581005 | hash cracking & bash script writing | 20% |
+| 412581005 | hash cracking & kali using guide | 20% |
