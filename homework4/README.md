@@ -41,7 +41,7 @@
 - SHA3-256
 
     | Hash | Password | Method |
-    | - | - |
+    | - | - | - |
     | 1074f17769cc2dfc0d65f713a7d8c4fd97fc78c69cfa13263b07b0e40b3cf83a | sweetlove |  rockyou |
     | 94f72dc2ea6bfae657b0ee3d5adb992aa669f6c4141717344e24e873dc09be04 | shunkoko | rockyou |
     | 19c743dc300d52fc93b5ee8c6d224f3beb8a05079e6439855cdae7e55bf16ef0 | mrzdale08 | rockyou |
