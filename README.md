@@ -17,17 +17,27 @@
         source ~/.zprofile
         ```
 
-    - ARM / Mac
+    - ARM
 
         ```bash
         wget https://dl.google.com/go/go1.24.5.linux-arm64.tar.gz
         sudo tar -C /usr/local -zxvf go1.24.5.linux-arm64.tar.gz
         mkdir -p ~/go/{bin,pkg,src}
-        echo 'export GOPATH=$HOME/go' >> ~/.zprofile
-        echo 'export GOROOT=/usr/local/go' >> ~/.zprofile
-        echo 'export PATH=$PATH:$GOPATH/bin:$GOROOT/bin' >> ~/.zprofile
-        echo 'export GO111MODULE=auto' >> ~/.zprofile
-        source ~/.zprofile
+        echo 'export GOPATH=$HOME/go' >> ~/.bashrc
+        echo 'export GOROOT=/usr/local/go' >> ~/.bashrc
+        echo 'export PATH=$PATH:$GOPATH/bin:$GOROOT/bin' >> ~/.bashrc
+        echo 'export GO111MODULE=auto' >> ~/.bashrc
+        source ~/.bashrc
+        ```
+
+    - MAC
+
+        Go to go official website, and download go 1.24.5 darwin-arm64.
+
+        ```bash
+        sudo tar -C /usr/local -xzf go1.24.5.darwin-amd64.tar.gz
+        export PATH=$PATH:/usr/local/go/bin
+        go version
         ```
 
 ## Clone the repo
