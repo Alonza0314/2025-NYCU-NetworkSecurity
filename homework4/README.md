@@ -4,6 +4,11 @@
 
 - [rockyou.txt](https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt)
 
+```bash
+cd 2025-NetworkSecurity/homework4
+curl -L -o rockyou.txt.gz "https://github.com/brannondorsey/naive-hashcat/releases/download/data/rockyou.txt"
+```
+
 ## P3HTTP
 
 - ApacheMD5
