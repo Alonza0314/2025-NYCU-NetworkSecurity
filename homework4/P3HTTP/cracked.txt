@@ -1,0 +1,10 @@
+demo:microsoft
+ovwebusr:77777777
+cxsdk:electric
+QCC:iforget
+tomcat:tivoli
+admin:KKKKKKK
+[xampp] Failed to crack password
+[server_admin] Failed to crack password
+[role1] Failed to crack password
+[j2deployer] Failed to crack password
