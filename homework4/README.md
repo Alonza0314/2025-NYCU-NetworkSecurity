@@ -71,9 +71,9 @@ attack.waynechiu.cc:3022
     | webmaster| | |
     | tcpdump | | |
     | linaro | | |
-    | hplip | love12 | |
-    | unscd | !@#$%^& | |
-    | zabbix | vassiliki | |
+    | hplip | love12 | rockyou |
+    | unscd | !@#$%^& | rockyou |
+    | zabbix | vassiliki | rockyou |
     | omsagent | | |
     | xpdb | | |
 
