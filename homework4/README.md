@@ -59,11 +59,11 @@ attack.waynechiu.cc:3022
 
 - SHA512
 
-    ｜ User ｜ Password ｜
-    ｜ - ｜ - ｜
-    ｜ postfix ｜ password ｜
-    ｜ oracle | whatever |
-    | webmaster | |
+    |User | Password |
+    | - | - |
+    | postfix | password |
+    | oracle | whatever |
+    | webmaster| |
     | tcpdump | |
     | linaro | |
     | hplip | love12 |
@@ -79,7 +79,7 @@ attack.waynechiu.cc:3089
 ## Contribution Table
 
 | Student ID | Works | Percentage |
-| - | - |
+| - | - | - |
 | 314581015 | hash cracking & hashes validate | 20% |
 | 313581047 | golang coding & multi-routine architecture | 20% |
 | 313581038 | hash cracking & test file writing | 20% |
