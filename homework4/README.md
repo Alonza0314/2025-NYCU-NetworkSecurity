@@ -100,7 +100,7 @@ attack.waynechiu.cc:3089
 | Administrator | 123123123 | rockyou |
 | Guest | (no-pwd) | rockyou |
 | DefaultAccount | (no-pwd) | rockyou |
-| WDAGUtilityAccount | |
+| WDAGUtilityAccount | | |
 | db2admin | Manager | rockyou |
 | sa | sqlsqlsqlsql | fasttrack/wordlist |
 | owner | | |
