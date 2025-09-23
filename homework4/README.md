@@ -104,7 +104,7 @@ attack.waynechiu.cc:3089
 | WDAGUtilityAccount | | |
 | db2admin | Manager | rockyou |
 | sa | sqlsqlsqlsql | fasttrack/wordlist |
-| owner | | |
+| owner | init1234 | rockyou |
 | secure | | |
 | admin | trinity | rockyou |
 | demo | | |
