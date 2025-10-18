@@ -6,6 +6,12 @@
 ## Analysis Table
 
 - [1 Initial Setup](#1-initial-setup)
+
+    - [1.1.1.1 Ensure cramfs kernel module is not available](#1111-ensure-cramfs-kernel-module-is-not-available)
+    - [1.1.1.2 Ensure freevxfs kernel module is not available](#1112-ensure-freevxfs-kernel-module-is-not-available)
+    - [1.1.1.3 Ensure hfs kernel module is not available](#1113-ensure-hfs-kernel-module-is-not-available)
+    - [1.1.1.4 Ensure hfsplus kernel module is not available](#1114-ensure-hfsplus-kernel-module-is-not-available)
+
 - [2 Services](#2-services)
 
     - [2.1.13 Ensure rsync services are not in use](#2113-ensure-rsync-services-are-not-in-use)
@@ -24,6 +30,278 @@
 - [5 Access Control](#5-access-control)
 
 ## 1 Initial Setup
+
+### 1.1.1.1 Ensure cramfs kernel module is not available
+
+**Analysis:**
+
+**Why OS left default configurations:**
+
+- **Legacy Compatibility**: cramfs is an older, compressed read-only filesystem, historically used in embedded systems or boot images where space was extremely limited
+- **Specific Use Cases**: Might have been included for niche applications requiring a highly compressed, immutable filesystem
+- **Minimal Overhead**: Its read-only nature and compression offered benefits for specific, resource-constrained environments
+- **Ease-of-Use**: Pre-installed kernel module support for various filesystem types without manual configuration
+
+**Security Issues:**
+
+- **Unnecessary Attack Surface**: If cramfs is not actively used, having its kernel module available increases the system's attack surface
+- **Potential Vulnerabilities**: As an older and less actively maintained filesystem, cramfs might contain undiscovered vulnerabilities that could be exploited
+- **Kernel Exploitation**: A vulnerability in the cramfs module could potentially lead to kernel-level exploits, compromising the entire system
+- **Compliance violations**: Many security standards require disabling unused kernel modules to reduce attack surface
+
+**Remediation Solutions:**
+
+1. **Unload the cramfs kernel module**:
+
+    ```bash
+    # Unload cramfs module if currently loaded
+    modprobe -r cramfs 2>/dev/null
+    rmmod cramfs 2>/dev/null
+    ```
+
+2. **Disable cramfs kernel module permanently**:
+
+    ```bash
+    # Prevent cramfs from being loaded by making any attempt to install it fail
+    printf '\n%s\n' "install cramfs /bin/false" >> /etc/modprobe.d/cramfs.conf
+    
+    # Blacklist cramfs to prevent automatic loading
+    printf '\n%s\n' "blacklist cramfs" >> /etc/modprobe.d/cramfs.conf
+    
+    # Update initramfs to ensure changes persist across reboots
+    update-initramfs -u
+    ```
+
+3. **Verify configuration**:
+
+    ```bash
+    # Check if cramfs module is loaded
+    lsmod | grep cramfs
+    
+    # Verify modprobe configuration
+    cat /etc/modprobe.d/cramfs.conf
+    ```
+
+**Impact on Users:**
+
+- **Positive**: Reduces attack surface, improves system security, prevents potential kernel exploits
+- **Negative**: Disables cramfs functionality (rarely used in modern systems), may break specific embedded applications
+- **Minimal disruption**: For typical desktop/workstation systems, no impact on normal operations
+
+**Security vs User Friendliness Balance:**
+
+The optimal approach is **disable unless specifically required**:
+
+- **Primary action**: Disable cramfs kernel module on general-purpose systems
+- **Exception handling**: Enable only when cramfs is explicitly needed for specific applications
+- **Documentation**: Clearly document when and why cramfs should be enabled
+- **Monitoring**: Implement alerts for unauthorized kernel module loading
+
+This approach prioritizes security by reducing the attack surface while maintaining functionality for systems that legitimately require cramfs support.
+
+### 1.1.1.2 Ensure freevxfs kernel module is not available
+
+**Analysis:**
+
+**Why OS left default configurations:**
+
+- **Legacy Compatibility**: freevxfs is a free version of the Veritas filesystem, historically used for HP-UX operating systems compatibility
+- **Cross-platform Support**: Included to support filesystem interoperability between different Unix-like systems
+- **Specific Use Cases**: Might have been included for enterprise environments requiring HP-UX filesystem access
+- **Ease-of-Use**: Pre-installed kernel module support for various filesystem types without manual configuration
+
+**Security Issues:**
+
+- **Unnecessary Attack Surface**: If freevxfs is not actively used, having its kernel module available increases the system's attack surface
+- **Potential Vulnerabilities**: As a less commonly used filesystem, freevxfs might contain undiscovered vulnerabilities that could be exploited
+- **Kernel Exploitation**: A vulnerability in the freevxfs module could potentially lead to kernel-level exploits, compromising the entire system
+- **Compliance violations**: Many security standards require disabling unused kernel modules to reduce attack surface
+
+**Remediation Solutions:**
+
+1. **Unload the freevxfs kernel module**:
+
+    ```bash
+    # Unload freevxfs module if currently loaded
+    modprobe -r freevxfs 2>/dev/null
+    rmmod freevxfs 2>/dev/null
+    ```
+
+2. **Disable freevxfs kernel module permanently**:
+
+    ```bash
+    # Prevent freevxfs from being loaded by making any attempt to install it fail
+    printf '\n%s\n' "install freevxfs /bin/false" >> /etc/modprobe.d/freevxfs.conf
+    
+    # Blacklist freevxfs to prevent automatic loading
+    printf '\n%s\n' "blacklist freevxfs" >> /etc/modprobe.d/freevxfs.conf
+    
+    # Update initramfs to ensure changes persist across reboots
+    update-initramfs -u
+    ```
+
+3. **Verify configuration**:
+
+    ```bash
+    # Check if freevxfs module is loaded
+    lsmod | grep freevxfs
+    
+    # Verify modprobe configuration
+    cat /etc/modprobe.d/freevxfs.conf
+    ```
+
+**Impact on Users:**
+
+- **Positive**: Reduces attack surface, improves system security, prevents potential kernel exploits
+- **Negative**: Disables freevxfs functionality (rarely used in modern Linux systems), may break HP-UX filesystem access
+- **Minimal disruption**: For typical desktop/workstation systems, no impact on normal operations
+
+**Security vs User Friendliness Balance:**
+
+The optimal approach is **disable unless specifically required**:
+
+- **Primary action**: Disable freevxfs kernel module on general-purpose systems
+- **Exception handling**: Enable only when freevxfs is explicitly needed for HP-UX compatibility
+- **Documentation**: Clearly document when and why freevxfs should be enabled
+- **Monitoring**: Implement alerts for unauthorized kernel module loading
+
+This approach prioritizes security by reducing the attack surface while maintaining functionality for systems that legitimately require freevxfs support for HP-UX filesystem access.
+
+### 1.1.1.3 Ensure hfs kernel module is not available
+
+**Analysis:**
+
+**Why OS left default configurations:**
+
+- **Cross-platform Compatibility**: HFS (Hierarchical File System) is used to mount Mac OS filesystems, enabling interoperability between Linux and macOS systems
+- **Data Migration Support**: Included to support users migrating data from Mac systems or accessing Mac-formatted storage devices
+- **Specific Use Cases**: Might have been included for enterprise environments requiring Mac filesystem access
+- **Ease-of-Use**: Pre-installed kernel module support for various filesystem types without manual configuration
+
+**Security Issues:**
+
+- **Unnecessary Attack Surface**: If HFS is not actively used, having its kernel module available increases the system's attack surface
+- **Potential Vulnerabilities**: As a less commonly used filesystem in Linux environments, HFS might contain undiscovered vulnerabilities that could be exploited
+- **Kernel Exploitation**: A vulnerability in the HFS module could potentially lead to kernel-level exploits, compromising the entire system
+- **Compliance violations**: Many security standards require disabling unused kernel modules to reduce attack surface
+
+**Remediation Solutions:**
+
+1. **Unload the HFS kernel module**:
+
+    ```bash
+    # Unload HFS module if currently loaded
+    modprobe -r hfs 2>/dev/null
+    rmmod hfs 2>/dev/null
+    ```
+
+2. **Disable HFS kernel module permanently**:
+
+    ```bash
+    # Prevent HFS from being loaded by making any attempt to install it fail
+    printf '\n%s\n' "install hfs /bin/false" >> /etc/modprobe.d/hfs.conf
+    
+    # Blacklist HFS to prevent automatic loading
+    printf '\n%s\n' "blacklist hfs" >> /etc/modprobe.d/hfs.conf
+    
+    # Update initramfs to ensure changes persist across reboots
+    update-initramfs -u
+    ```
+
+3. **Verify configuration**:
+
+    ```bash
+    # Check if HFS module is loaded
+    lsmod | grep hfs
+    
+    # Verify modprobe configuration
+    cat /etc/modprobe.d/hfs.conf
+    ```
+
+**Impact on Users:**
+
+- **Positive**: Reduces attack surface, improves system security, prevents potential kernel exploits
+- **Negative**: Disables HFS functionality, may break Mac filesystem access and data migration capabilities
+- **Minimal disruption**: For typical desktop/workstation systems without Mac interaction, no impact on normal operations
+
+**Security vs User Friendliness Balance:**
+
+The optimal approach is **disable unless specifically required**:
+
+- **Primary action**: Disable HFS kernel module on general-purpose systems
+- **Exception handling**: Enable only when HFS is explicitly needed for Mac filesystem access
+- **Documentation**: Clearly document when and why HFS should be enabled
+- **Monitoring**: Implement alerts for unauthorized kernel module loading
+
+This approach prioritizes security by reducing the attack surface while maintaining functionality for systems that legitimately require HFS support for Mac filesystem access.
+
+### 1.1.1.4 Ensure hfsplus kernel module is not available
+
+**Analysis:**
+
+**Why OS left default configurations:**
+
+- **Cross-platform Compatibility**: HFS+ (Hierarchical File System Plus) is the successor to HFS, designed to replace HFS and enable mounting of modern Mac OS filesystems
+- **Data Migration Support**: Included to support users migrating data from modern Mac systems or accessing Mac-formatted storage devices
+- **Specific Use Cases**: Might have been included for enterprise environments requiring modern Mac filesystem access
+- **Ease-of-Use**: Pre-installed kernel module support for various filesystem types without manual configuration
+
+**Security Issues:**
+
+- **Unnecessary Attack Surface**: If HFS+ is not actively used, having its kernel module available increases the system's attack surface
+- **Potential Vulnerabilities**: As a less commonly used filesystem in Linux environments, HFS+ might contain undiscovered vulnerabilities that could be exploited
+- **Kernel Exploitation**: A vulnerability in the HFS+ module could potentially lead to kernel-level exploits, compromising the entire system
+- **Compliance violations**: Many security standards require disabling unused kernel modules to reduce attack surface
+
+**Remediation Solutions:**
+
+1. **Unload the HFS+ kernel module**:
+
+    ```bash
+    # Unload HFS+ module if currently loaded
+    modprobe -r hfsplus 2>/dev/null
+    rmmod hfsplus 2>/dev/null
+    ```
+
+2. **Disable HFS+ kernel module permanently**:
+
+    ```bash
+    # Prevent HFS+ from being loaded by making any attempt to install it fail
+    printf '\n%s\n' "install hfsplus /bin/false" >> /etc/modprobe.d/hfsplus.conf
+    
+    # Blacklist HFS+ to prevent automatic loading
+    printf '\n%s\n' "blacklist hfsplus" >> /etc/modprobe.d/hfsplus.conf
+    
+    # Update initramfs to ensure changes persist across reboots
+    update-initramfs -u
+    ```
+
+3. **Verify configuration**:
+
+    ```bash
+    # Check if HFS+ module is loaded
+    lsmod | grep hfsplus
+    
+    # Verify modprobe configuration
+    cat /etc/modprobe.d/hfsplus.conf
+    ```
+
+**Impact on Users:**
+
+- **Positive**: Reduces attack surface, improves system security, prevents potential kernel exploits
+- **Negative**: Disables HFS+ functionality, may break modern Mac filesystem access and data migration capabilities
+- **Minimal disruption**: For typical desktop/workstation systems without Mac interaction, no impact on normal operations
+
+**Security vs User Friendliness Balance:**
+
+The optimal approach is **disable unless specifically required**:
+
+- **Primary action**: Disable HFS+ kernel module on general-purpose systems
+- **Exception handling**: Enable only when HFS+ is explicitly needed for modern Mac filesystem access
+- **Documentation**: Clearly document when and why HFS+ should be enabled
+- **Monitoring**: Implement alerts for unauthorized kernel module loading
+
+This approach prioritizes security by reducing the attack surface while maintaining functionality for systems that legitimately require HFS+ support for modern Mac filesystem access.
 
 ## 2 Services
 
