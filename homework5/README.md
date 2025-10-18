@@ -12,9 +12,14 @@
     - [2.2.4 Ensure telnet client is not installed](#224-ensure-telnet-client-is-not-installed)
     - [2.2.6 Ensure ftp client is not installed](#226-ensure-ftp-client-is-not-installed)
     - [2.3.2.1 Ensure systemd-timesyncd configured with authorized timeserver](#2321-ensure-systemd-timesyncd-configured-with-authorized-timeserver)
-    - [2.4.1.2 Ensure access to /etc/crontab is configured](#2412-ensure-access-to-etccrontab-is-configured)
 
 - [3 Network](#3-network)
+
+    - [3.3.1 Ensure ip forwarding is disabled](#331-ensure-ip-forwarding-is-disabled)
+    - [3.3.2 Ensure packet redirect sending is disabled](#332-ensure-packet-redirect-sending-is-disabled)
+    - [3.3.5 Ensure icmp redirects are not accepted](#335-ensure-icmp-redirects-are-not-accepted)
+    - [3.3.11 Ensure ipv6 router advertisements are not accepted](#3311-ensure-ipv6-router-advertisements-are-not-accepted)
+
 - [4 Host Based Firewall](#4-host-based-firewall)
 - [5 Access Control](#5-access-control)
 
@@ -254,74 +259,6 @@ The optimal approach is **configured with fallback options**:
 
 This approach ensures reliable time synchronization while maintaining security through the use of authorized time sources, with minimal impact on user experience once properly configured.
 
-### 2.4.1.2 Ensure access to /etc/crontab is configured
-
-**Analysis:**
-
-**Why OS left default configurations:**
-
-- **Service Reachability**: Default permissions allow system administrators to easily manage cron jobs without complex permission changes
-- **User Friendliness**: Permissive access enables quick troubleshooting and job management by authorized users
-- **Ease-of-Use**: Standard file permissions reduce complexity for system maintenance and automation scripts
-- **Legacy compatibility**: Historical Unix systems used more permissive defaults for system files
-
-**Security Issues:**
-
-- **Privilege escalation risk**: Unauthorized write access could allow users to execute commands as root
-- **Information disclosure**: Read access reveals system job schedules and commands, aiding attackers in reconnaissance
-- **Cron job manipulation**: Malicious users could modify scheduled tasks to gain persistent access
-- **System integrity compromise**: Unauthorized modifications could lead to system compromise or data exfiltration
-- **Compliance violations**: Many security standards require strict access controls on system configuration files
-
-**Remediation Solutions:**
-
-1. **Set proper ownership and permissions**:
-
-    ```bash
-    # Set root ownership
-    chown root:root /etc/crontab
-    
-    # Remove group and other access, keep only owner (root) access
-    chmod og-rwx /etc/crontab
-    
-    # Verify permissions (should show -rw-------)
-    ls -l /etc/crontab
-    ```
-
-2. **Verify configuration**:
-
-    ```bash
-    # Check file ownership
-    stat -c "%U:%G %a" /etc/crontab
-    
-    # Verify only root can read/write
-    sudo -u nobody cat /etc/crontab  # Should fail
-    ```
-
-3. **Additional security measures**:
-
-    - Implement file integrity monitoring (AIDE, Tripwire)
-    - Regular audit of cron job permissions
-    - Monitor for unauthorized cron job modifications
-    - Use SELinux/AppArmor for additional access controls
-
-**Impact on Users:**
-
-- **Positive**: Prevents privilege escalation, protects system integrity, ensures compliance with security standards
-- **Negative**: Requires root access to modify cron jobs, may complicate automated deployment scripts
-- **Minimal disruption**: Normal system operation continues, only administrative access is restricted
-
-**Security vs User Friendliness Balance:**
-
-The optimal approach is **strict access control with proper documentation**:
-
-- **Primary action**: Implement strict file permissions (600) with root ownership
-- **Administrative access**: Provide clear procedures for authorized cron job management
-- **Monitoring**: Implement change detection and alerting for critical system files
-- **Documentation**: Create guidelines for secure cron job management and troubleshooting
-
-This approach prioritizes system security by preventing unauthorized access to critical system files while maintaining functionality through proper administrative procedures and documentation.
-
 ## 3 Network
 
 ### 3.3.1 Ensure ip forwarding is disabled
@@ -545,6 +482,79 @@ The optimal approach is **disable unless specifically required**:
 - **Monitoring**: Implement alerts for unauthorized ICMP redirect configuration changes
 
 This approach prioritizes security by preventing malicious ICMP redirect attacks while maintaining functionality for systems that legitimately require routing optimization capabilities.
+
+### 3.3.11 Ensure ipv6 router advertisements are not accepted
+
+**Analysis:**
+
+**Why OS left default configurations:**
+
+- **Service Reachability**: IPv6 Router Advertisements (RA) enable automatic network configuration and router discovery
+- **User Friendliness**: Default enabled state supports automatic IPv6 network configuration without manual setup
+- **Ease-of-Use**: Automatic network configuration reduces IPv6 deployment complexity
+- **Legacy compatibility**: Historical IPv6 implementations relied on RA for network auto-configuration
+
+**Security Issues:**
+
+- **Router advertisement spoofing**: Attackers can send malicious RA messages to manipulate network configuration
+- **Traffic redirection**: Malicious RA messages can redirect traffic through attacker-controlled routers
+- **Network disruption**: Malicious RA messages can cause network configuration failures and connectivity issues
+- **Man-in-the-middle attacks**: Attackers can use RA spoofing to intercept and modify network traffic
+- **Compliance violations**: Many security standards require disabling RA acceptance on non-router systems
+
+**Remediation Solutions:**
+
+1. **Disable IPv6 Router Advertisement acceptance**:
+
+    ```bash
+    # Disable IPv6 Router Advertisement acceptance
+    printf '%s\n' "net.ipv6.conf.all.accept_ra = 0" "net.ipv6.conf.default.accept_ra = 0" >> /etc/sysctl.d/60-netipv6_sysctl.conf
+    
+    # Apply configuration immediately
+    sysctl --system
+    ```
+
+2. **Apply active parameters**:
+
+    ```bash
+    # Disable all interfaces from accepting IPv6 Router Advertisements
+    sysctl -w net.ipv6.conf.all.accept_ra=0
+    
+    # Disable default interface from accepting IPv6 Router Advertisements
+    sysctl -w net.ipv6.conf.default.accept_ra=0
+    
+    # Clear IPv6 route cache
+    sysctl -w net.ipv6.route.flush=1
+    ```
+
+3. **Verify configuration**:
+
+    ```bash
+    # Check all interfaces parameter
+    sysctl net.ipv6.conf.all.accept_ra
+    
+    # Check default interface parameter
+    sysctl net.ipv6.conf.default.accept_ra
+    
+    # Expected output: both should show = 0
+    ```
+
+**Impact on Users:**
+
+- **Positive**: Prevents router advertisement spoofing, improves IPv6 security, reduces attack surface
+- **Negative**: Disables automatic IPv6 network configuration, may require manual IPv6 setup
+- **Minimal disruption**: For typical desktop/workstation systems, no impact on normal operations
+
+**Security vs User Friendliness Balance:**
+
+The optimal approach is **disable unless specifically required**:
+
+- **Primary action**: Disable IPv6 Router Advertisement acceptance on non-router systems
+- **Exception handling**: Enable only when automatic IPv6 configuration is explicitly needed
+- **Documentation**: Clearly document when and why IPv6 RA acceptance should be enabled
+- **Monitoring**: Implement alerts for unauthorized IPv6 RA configuration changes
+
+This approach prioritizes security by preventing malicious IPv6 Router Advertisement attacks while maintaining functionality for systems that legitimately require automatic IPv6 network configuration.
 
 ## 4 Host Based Firewall
 
