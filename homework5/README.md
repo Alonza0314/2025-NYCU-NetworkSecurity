@@ -168,6 +168,77 @@ The optimal approach is **complete removal with secure alternatives**:
 
 This approach prioritizes data security while providing users with more robust and encrypted file transfer capabilities that offer better protection than traditional FTP.
 
+### 2.3.2.1 Ensure systemd-timesyncd configured with authorized timeserver
+
+**Analysis:**
+
+**Why OS left default configurations:**
+
+- **Service Reachability**: Default NTP servers provide basic time synchronization without requiring manual configuration
+- **User Friendliness**: Automatic time synchronization works out-of-the-box, reducing setup complexity for users
+- **Ease-of-Use**: No additional configuration needed, system automatically connects to public NTP servers
+- **Universal compatibility**: Default servers are widely accessible and generally reliable
+
+**Security Issues:**
+
+- **Untrusted time sources**: Default NTP servers may not be from authorized or trusted sources
+- **Time manipulation attacks**: Malicious NTP servers could provide incorrect time, affecting security mechanisms
+- **Log integrity concerns**: Inconsistent timestamps across systems complicate forensic investigations
+- **Compliance violations**: Many security standards require time synchronization with authorized servers
+- **Kerberos authentication failures**: Incorrect time can cause Kerberos ticket validation to fail
+
+**Remediation Solutions:**
+
+1. **Configure authorized NTP servers**:
+
+    ```bash
+    # Create configuration file
+    sudo mkdir -p /etc/systemd/timesyncd.conf.d/
+    
+    # Add authorized time servers
+    cat > /etc/systemd/timesyncd.conf.d/60-timesyncd.conf << EOF
+    [Time]
+    NTP=time.nist.gov
+    FallbackNTP=time-a-g.nist.gov time-b-g.nist.gov time-c-g.nist.gov
+    EOF
+    
+    # Reload configuration
+    systemctl reload-or-restart systemd-timesyncd
+    ```
+
+2. **Verify configuration**:
+
+    ```bash
+    # Check current configuration
+    timedatectl show-timesync --all
+    
+    # Verify time synchronization status
+    timedatectl status
+    ```
+
+3. **Alternative secure time sources**:
+
+    - Use internal NTP servers for enterprise environments
+    - Configure GPS-based time sources for critical systems
+    - Implement redundant time sources for high availability
+
+**Impact on Users:**
+
+- **Positive**: Improved security posture, consistent logging across systems, compliance with security standards
+- **Negative**: Requires initial configuration, potential connectivity issues if authorized servers are unreachable
+- **Minimal disruption**: Once configured, operates transparently without user intervention
+
+**Security vs User Friendliness Balance:**
+
+The optimal approach is **configured with fallback options**:
+
+- **Primary action**: Configure authorized NTP servers with known, trusted sources
+- **Fallback strategy**: Provide multiple fallback servers to ensure availability
+- **Monitoring**: Implement time drift monitoring and alerting
+- **Documentation**: Provide clear configuration examples and troubleshooting guides
+
+This approach ensures reliable time synchronization while maintaining security through the use of authorized time sources, with minimal impact on user experience once properly configured.
+
 ## 3 Network
 
 ## 4 HostBased Firewall
