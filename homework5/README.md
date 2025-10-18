@@ -467,6 +467,85 @@ The optimal approach is **disable unless specifically required**:
 
 This approach prioritizes security by preventing malicious ICMP redirect attacks while maintaining functionality for systems that legitimately require routing optimization capabilities.
 
+### 3.3.5 Ensure icmp redirects are not accepted
+
+**Analysis:**
+
+**Why OS left default configurations:**
+
+- **Service Reachability**: ICMP redirects help optimize network routing by allowing external routing devices to update system routing tables
+- **User Friendliness**: Default enabled state supports automatic network optimization without manual configuration
+- **Ease-of-Use**: Automatic route updates reduce network configuration complexity
+- **Legacy compatibility**: Historical network implementations relied on ICMP redirects for optimal routing
+
+**Security Issues:**
+
+- **Man-in-the-middle attacks**: Attackers can send malicious ICMP redirects to manipulate routing tables
+- **Route manipulation**: Malicious redirects can redirect traffic through attacker-controlled systems
+- **Network disruption**: Malicious redirects can cause network routing failures and connectivity issues
+- **Traffic interception**: Attackers can intercept and potentially modify redirected network traffic
+- **Compliance violations**: Many security standards require disabling ICMP redirect acceptance on non-router systems
+
+**Remediation Solutions:**
+
+1. **Disable ICMP redirect acceptance**:
+
+    ```bash
+    # Disable IPv4 ICMP redirect acceptance
+    printf '%s\n' "net.ipv4.conf.all.accept_redirects = 0" "net.ipv4.conf.default.accept_redirects = 0" >> /etc/sysctl.d/60-netipv4_sysctl.conf
+    
+    # Disable IPv6 ICMP redirect acceptance
+    printf '%s\n' "net.ipv6.conf.all.accept_redirects = 0" "net.ipv6.conf.default.accept_redirects = 0" >> /etc/sysctl.d/60-netipv6_sysctl.conf
+    
+    # Apply configuration immediately
+    sysctl --system
+    ```
+
+2. **Apply active parameters**:
+
+    ```bash
+    # Disable IPv4 ICMP redirect acceptance
+    sysctl -w net.ipv4.conf.all.accept_redirects=0
+    sysctl -w net.ipv4.conf.default.accept_redirects=0
+    sysctl -w net.ipv4.route.flush=1
+    
+    # Disable IPv6 ICMP redirect acceptance (if IPv6 is enabled)
+    sysctl -w net.ipv6.conf.all.accept_redirects=0
+    sysctl -w net.ipv6.conf.default.accept_redirects=0
+    sysctl -w net.ipv6.route.flush=1
+    ```
+
+3. **Verify configuration**:
+
+    ```bash
+    # Check IPv4 parameters
+    sysctl net.ipv4.conf.all.accept_redirects
+    sysctl net.ipv4.conf.default.accept_redirects
+    
+    # Check IPv6 parameters
+    sysctl net.ipv6.conf.all.accept_redirects
+    sysctl net.ipv6.conf.default.accept_redirects
+    
+    # Expected output: all should show = 0
+    ```
+
+**Impact on Users:**
+
+- **Positive**: Prevents man-in-the-middle attacks, improves network security, reduces attack surface
+- **Negative**: Disables automatic route optimization, may require manual network configuration
+- **Minimal disruption**: For typical desktop/workstation systems, no impact on normal operations
+
+**Security vs User Friendliness Balance:**
+
+The optimal approach is **disable unless specifically required**:
+
+- **Primary action**: Disable ICMP redirect acceptance on non-router systems
+- **Exception handling**: Enable only when routing optimization is explicitly needed
+- **Documentation**: Clearly document when and why ICMP redirect acceptance should be enabled
+- **Monitoring**: Implement alerts for unauthorized ICMP redirect configuration changes
+
+This approach prioritizes security by preventing malicious ICMP redirect attacks while maintaining functionality for systems that legitimately require routing optimization capabilities.
+
 ## 4 Host Based Firewall
 
 ## 5 Access Control
