@@ -3,6 +3,21 @@
 > [!Note]
 > The system is **Ubuntu 20.04**.
 
+## Analysis Table
+
+- [1 Initial Setup](#1-initial-setup)
+- [2 Services](#2-services)
+
+    - [2.1.13 Ensure rsync services are not in use](#2113-ensure-rsync-services-are-not-in-use)
+    - [2.2.4 Ensure telnet client is not installed](#224-ensure-telnet-client-is-not-installed)
+    - [2.2.6 Ensure ftp client is not installed](#226-ensure-ftp-client-is-not-installed)
+    - [2.3.2.1 Ensure systemd-timesyncd configured with authorized timeserver](#2321-ensure-systemd-timesyncd-configured-with-authorized-timeserver)
+    - [2.4.1.2 Ensure access to /etc/crontab is configured](#2412-ensure-access-to-etccrontab-is-configured)
+
+- [3 Network](#3-network)
+- [4 Host Based Firewall](#4-host-based-firewall)
+- [5 Access Control](#5-access-control)
+
 ## 1 Initial Setup
 
 ## 2 Services
@@ -309,7 +324,9 @@ This approach prioritizes system security by preventing unauthorized access to c
 
 ## 3 Network
 
-## 4 HostBased Firewall
+### 3.3.1 Ensure ip forwarding is disabled
+
+## 4 Host Based Firewall
 
 ## 5 Access Control
 
