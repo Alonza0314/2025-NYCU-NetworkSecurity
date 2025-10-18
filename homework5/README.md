@@ -396,6 +396,77 @@ The optimal approach is **disable unless specifically required**:
 
 This approach prioritizes security by default while maintaining functionality for systems that legitimately require routing capabilities.
 
+### 3.3.2 Ensure packet redirect sending is disabled
+
+**Analysis:**
+
+**Why OS left default configurations:**
+
+- **Service Reachability**: ICMP redirects help optimize network routing by informing hosts of better routes
+- **User Friendliness**: Default enabled state supports automatic network optimization without manual configuration
+- **Ease-of-Use**: Automatic route optimization reduces network configuration complexity
+- **Legacy compatibility**: Historical network implementations relied on ICMP redirects for optimal routing
+
+**Security Issues:**
+
+- **Attack surface expansion**: Enables malicious ICMP redirect attacks that can disrupt network routing
+- **Route manipulation**: Attackers can use compromised hosts to send malicious ICMP redirects
+- **Network disruption**: Malicious redirects can cause network routing failures and connectivity issues
+- **Compliance violations**: Many security standards require disabling ICMP redirects on non-router systems
+- **Lateral movement**: Facilitates attackers manipulating network traffic flow
+
+**Remediation Solutions:**
+
+1. **Disable ICMP redirect sending**:
+
+    ```bash
+    # Create configuration file
+    printf '%s\n' "net.ipv4.conf.all.send_redirects = 0" "net.ipv4.conf.default.send_redirects = 0" >> /etc/sysctl.d/60-netipv4_sysctl.conf
+    
+    # Apply configuration immediately
+    sysctl --system
+    
+    # Alternative: Apply specific parameters
+    sysctl -w net.ipv4.conf.all.send_redirects=0
+    sysctl -w net.ipv4.conf.default.send_redirects=0
+    sysctl -w net.ipv4.route.flush=1
+    ```
+
+2. **Verify configuration**:
+
+    ```bash
+    # Check all interfaces parameter
+    sysctl net.ipv4.conf.all.send_redirects
+    
+    # Check default interface parameter
+    sysctl net.ipv4.conf.default.send_redirects
+    
+    # Expected output: both should show = 0
+    ```
+
+3. **Alternative configuration methods**:
+
+    - Add to `/etc/sysctl.conf` if preferred
+    - Use higher numbered files in `/etc/sysctl.d/` to override existing settings
+    - Implement monitoring to detect unauthorized changes
+
+**Impact on Users:**
+
+- **Positive**: Prevents ICMP redirect attacks, improves network security, reduces attack surface
+- **Negative**: Disables automatic route optimization, may require manual network configuration
+- **Minimal disruption**: For typical desktop/workstation systems, no impact on normal operations
+
+**Security vs User Friendliness Balance:**
+
+The optimal approach is **disable unless specifically required**:
+
+- **Primary action**: Disable ICMP redirect sending on non-router systems
+- **Exception handling**: Enable only when routing optimization is explicitly needed
+- **Documentation**: Clearly document when and why ICMP redirects should be enabled
+- **Monitoring**: Implement alerts for unauthorized ICMP redirect configuration changes
+
+This approach prioritizes security by preventing malicious ICMP redirect attacks while maintaining functionality for systems that legitimately require routing optimization capabilities.
+
 ## 4 Host Based Firewall
 
 ## 5 Access Control
