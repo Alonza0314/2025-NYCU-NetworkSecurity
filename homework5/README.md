@@ -64,3 +64,13 @@ This approach maintains functionality while significantly improving security pos
 ## 4 HostBased Firewall
 
 ## 5 Access Control
+
+## Contribution Table
+
+| Student ID | Works | Percentage |
+| - | - | - |
+| 314581015 | Chapter 1 | 20% |
+| 313581047 | Chapter 2 | 20% |
+| 313581038 | Chapter 3 | 20% |
+| 313581055 | Chapter 4 | 20% |
+| 412581005 | Chapter 5 | 20% |
