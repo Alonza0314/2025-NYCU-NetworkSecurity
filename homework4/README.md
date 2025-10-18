@@ -10,22 +10,25 @@
     gunzip rockyou.txt.gz
     ```
 
+- [weakpass_4.txt](https://weakpass.com/download)
+
 ## P3HTTP
 
 - ApacheMD5
 
-    | User | Cracked | Method |
-    | - | - | - |
-    | admin | KKKKKKK | rockyou |
-    | tomcat | tivoli | rockyou |
-    | xampp | | |
-    | server_admin | | |
-    | demo | microsoft | rockyou |
-    | QCC | iforget | rockyou |
-    | cxsdk | electric | rockyou |
-    | ovwebusr | 77777777 | rockyou |
-    | role1 | | |
-    | j2deployer | | |
+    | User | Hash | Cracked | Method |
+    | - | - | - | - |
+    | admin | $apr1$GToZ6eNr$wn/MOgnx/f4Y0diEa7BNa1 | KKKKKKK | rockyou |
+    | tomcat | $apr1$no3kBUxm$pk411ceCDJpW2oNs0WB3U0 | tivoli | rockyou |
+    | xampp | $apr1$8WlYVzJL$C8ZhuDziOtni3HFtvKzGe0 | backupexec | weakpass_4 |
+    | server_admin | $apr1$y758YD1Y$R1lKrNG6SKSjd0Nmb3v5U1 | SQLSQLSQLSQL | weakpass_4 |
+    | demo | $apr1$JwOVMfoS$zMOzDn/xOMZ3VuEQO6IIj/ | microsoft | rockyou |
+    | QCC | $apr1$IKjpEtXZ$UsaHuXDT3z8OZaHtBab0X. | iforget | rockyou |
+    | cxsdk | $apr1$zMVw.RLi$kzXVI2SkGcgmioh1/R71L1 | electric | rockyou |
+    | ovwebusr | $apr1$rOLMqcAU$DiIw.q5MBQOHDsgtE7k7u. | 77777777 | rockyou |
+    | role1 | $apr1$.MLLcn6R$izw9nnviyDmEO3t0lrBpB0 | sestosant | weakpass_4 |
+    | j2deployer | $apr1$qfumuNjF$sH4FzC3E7yHoPjj2PTU5I1 | pantiled | weakpass_4 |
+
 
 ## P3Secure
 
