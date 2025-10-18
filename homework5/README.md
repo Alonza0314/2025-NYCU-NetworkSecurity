@@ -115,6 +115,59 @@ The optimal approach is **complete removal with secure alternatives**:
 
 This approach prioritizes security while providing users with more robust and secure alternatives that offer better functionality than telnet.
 
+### 2.2.6 Ensure ftp client is not installed
+
+**Analysis:**
+
+**Why OS left default configurations:**
+
+- **Service Reachability**: FTP is a traditional standard for file transfers, widely supported across different systems and platforms
+- **User Friendliness**: Simple command-line interface for quick file uploads/downloads, especially for anonymous access scenarios
+- **Ease-of-Use**: Lightweight client with minimal configuration, commonly used in legacy environments and automated scripts
+
+**Security Issues:**
+
+- **Unencrypted data transmission**: All file contents and credentials sent in plain text
+- **Credential exposure**: Usernames and passwords vulnerable to network interception
+- **No data integrity protection**: No verification that files haven't been tampered with during transfer
+- **Anonymous access risk**: Many FTP servers allow anonymous connections without authentication
+- **Legacy protocol vulnerabilities**: Designed in 1971 without modern security considerations
+
+**Remediation Solutions:**
+
+1. **Complete removal** (recommended):
+
+    ```bash
+    apt purge ftp
+    ```
+
+2. **Secure alternatives**:
+   - Use SFTP for encrypted file transfers: `sftp user@hostname`
+   - Use SCP for secure file copying: `scp file user@host:/path/`
+   - Use modern tools like `rsync` over SSH: `rsync -avz -e ssh user@host:/path/ /local/`
+   - Implement cloud storage solutions with encryption
+
+3. **Temporary usage** (if absolutely necessary):
+   - Install only when needed: `apt install ftp`
+   - Remove immediately after use: `apt purge ftp`
+   - Use only in isolated, secure networks
+
+**Impact on Users:**
+
+- **Positive**: Eliminates credential theft risk, forces adoption of secure file transfer methods, improves data protection
+- **Negative**: Loss of simple file transfer tool, need to learn SFTP/SCP commands, potential disruption to legacy workflows
+
+**Security vs User Friendliness Balance:**
+
+The optimal approach is **complete removal with secure alternatives**:
+
+- **Immediate action**: Remove FTP client completely
+- **User training**: Provide SFTP/SCP training and documentation
+- **Migration support**: Help users transition to secure alternatives
+- **Legacy compatibility**: Use SSH tunneling for accessing legacy FTP servers
+
+This approach prioritizes data security while providing users with more robust and encrypted file transfer capabilities that offer better protection than traditional FTP.
+
 ## 3 Network
 
 ## 4 HostBased Firewall
