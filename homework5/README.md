@@ -1,5 +1,8 @@
 # Homework 5
 
+> [!Note]
+> The system is **Ubuntu 20.04**.
+
 ## 1 Initial Setup
 
 ## 2 Services
@@ -58,6 +61,59 @@ The optimal solution is a **layered approach**:
 - Implement gradual transition with user training
 
 This approach maintains functionality while significantly improving security posture without major disruption to user workflows.
+
+### 2.2.4 Ensure telnet client is not installed
+
+**Analysis:**
+
+**Why OS left default configurations:**
+
+- **Service Reachability**: telnet was historically used for remote terminal access and network troubleshooting
+- **User Friendliness**: Simple command-line tool for quick connectivity testing and remote administration
+- **Ease-of-Use**: Lightweight client with minimal configuration requirements, commonly used in legacy systems
+
+**Security Issues:**
+
+- **Unencrypted transmission**: All data including credentials transmitted in plain text
+- **Credential theft risk**: Passwords and sensitive information vulnerable to network sniffing
+- **No authentication integrity**: No protection against man-in-the-middle attacks
+- **Legacy protocol**: Designed in 1969 without modern security considerations
+
+**Remediation Solutions:**
+
+1. **Complete removal** (recommended):
+
+    ```bash
+    apt purge telnet
+    ```
+
+2. **Secure alternatives**:
+
+    - Use SSH for encrypted remote access: `ssh user@hostname`
+    - Use modern tools like `nc` (netcat) for network testing
+    - Implement VPN solutions for secure remote connectivity
+
+3. **Temporary usage** (if absolutely necessary):
+
+    - Install only when needed: `apt install telnet`
+    - Remove immediately after use: `apt purge telnet`
+    - Use only in isolated, secure environments
+
+**Impact on Users:**
+
+- **Positive**: Eliminates credential theft risk, forces adoption of secure protocols, improves overall security posture
+- **Negative**: Loss of quick troubleshooting tool, need to learn SSH commands, potential workflow disruption for legacy system administrators
+
+**Security vs User Friendliness Balance:**
+
+The optimal approach is **complete removal with secure alternatives**:
+
+- **Immediate action**: Remove telnet client completely
+- **User training**: Provide SSH training and documentation
+- **Troubleshooting tools**: Offer secure alternatives (SSH, netcat, modern network utilities)
+- **Legacy support**: Use SSH tunneling for accessing legacy systems
+
+This approach prioritizes security while providing users with more robust and secure alternatives that offer better functionality than telnet.
 
 ## 3 Network
 
