@@ -29,7 +29,6 @@
     | role1 | $apr1$.MLLcn6R$izw9nnviyDmEO3t0lrBpB0 | sestosant | weakpass_4 |
     | j2deployer | $apr1$qfumuNjF$sH4FzC3E7yHoPjj2PTU5I1 | pantiled | weakpass_4 |
 
-
 ## P3Secure
 
 - MD5
