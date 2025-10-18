@@ -35,6 +35,11 @@
 
 - [5 Access Control](#5-access-control)
 
+    - [5.1.7 Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured](#517-ensure-sshd-clientaliveinterval-and-clientalivecountmax-are-configured)
+    - [5.1.13 Ensure sshd LoginGraceTime is configured](#5113-ensure-sshd-logingracetime-is-configured)
+    - [5.1.15 Ensure sshd MACs are configured](#5115-ensure-sshd-macs-are-configured)
+    - [5.1.16 Ensure sshd MaxAuthTries is configured](#5116-ensure-sshd-maxauthtries-is-configured)
+
 ## 1 Initial Setup
 
 ### 1.1.1.1 Ensure cramfs kernel module is not available
@@ -889,9 +894,10 @@ This approach prioritizes security by preventing malicious IPv6 Router Advertise
     ```
 
 3. **Additional configuration**:
-   - Configure default policies: `ufw default deny incoming` and `ufw default allow outgoing`
-   - Add specific rules for required services
-   - Monitor firewall logs for suspicious activity
+
+    - Configure default policies: `ufw default deny incoming` and `ufw default allow outgoing`
+    - Add specific rules for required services
+    - Monitor firewall logs for suspicious activity
 
 **Impact on Users:**
 
@@ -1124,6 +1130,271 @@ The optimal approach is **default deny with essential allow rules**:
 This approach prioritizes security by denying all traffic by default while maintaining functionality through carefully configured allow rules for essential services.
 
 ## 5 Access Control
+
+### 5.1.7 Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured
+
+**Analysis:**
+
+**Why OS left default configurations:**
+
+- **Service Reachability**: Default SSH configuration allows indefinite connections to ensure users are not disconnected unexpectedly
+- **User Friendliness**: Default settings prevent accidental disconnections during long-running operations or idle periods
+- **Ease-of-Use**: No timeout configuration reduces complexity for basic SSH usage
+- **Legacy compatibility**: Historical SSH configurations often used permissive timeout settings
+
+**Security Issues:**
+
+- **Resource exhaustion**: Indefinite SSH connections can lead to resource exhaustion and potential DoS attacks
+- **Unreliable network handling**: Without proper timeouts, connections may hang indefinitely on unreliable networks
+- **Attack surface**: Long-lived connections provide more opportunities for attackers to exploit
+- **Compliance violations**: Many security standards require proper SSH session timeout configuration
+
+**Remediation Solutions:**
+
+1. **Configure SSH session timeouts**:
+
+    ```bash
+    # Edit SSH configuration file
+    sudo nano /etc/ssh/sshd_config
+    
+    # Add or modify the following lines
+    ClientAliveInterval 15
+    ClientAliveCountMax 3
+    
+    # Restart SSH service
+    sudo systemctl restart sshd
+    ```
+
+2. **Verify configuration**:
+
+    ```bash
+    # Check SSH configuration
+    sudo sshd -T | grep -i clientalive
+    
+    # Test SSH connection timeout
+    ssh -o ServerAliveInterval=15 -o ServerAliveCountMax=3 user@hostname
+    ```
+
+3. **Additional security measures**:
+
+    - Monitor SSH connection logs for suspicious activity
+    - Implement additional network-level timeouts if needed
+    - Consider using SSH key-based authentication for better security
+
+**Impact on Users:**
+
+- **Positive**: Prevents resource exhaustion, improves security posture, handles unreliable networks better
+- **Negative**: May disconnect idle users after timeout period, requires reconnection for long operations
+- **Minimal disruption**: 45-second timeout (15 × 3) provides reasonable balance between security and usability
+
+**Security vs User Friendliness Balance:**
+
+The optimal approach is **configure with reasonable timeouts**:
+
+- **Primary action**: Set ClientAliveInterval to 15 seconds and ClientAliveCountMax to 3
+- **Timeout calculation**: This creates a 45-second total timeout (15 × 3) for idle connections
+- **Documentation**: Provide clear guidelines for SSH session management and reconnection procedures
+- **Monitoring**: Implement logging and alerting for SSH connection patterns
+
+This approach prioritizes security by preventing resource exhaustion while maintaining reasonable usability through appropriate timeout values that allow for normal user activity patterns.
+
+### 5.1.13 Ensure sshd LoginGraceTime is configured
+
+**Analysis:**
+
+**Why OS left default configurations:**
+
+- **Service Reachability**: Default SSH configuration allows longer grace periods to accommodate slow network connections or user input delays
+- **User Friendliness**: Longer grace periods prevent users from being disconnected during authentication attempts
+- **Ease-of-Use**: Default settings reduce the likelihood of authentication failures due to timing issues
+- **Legacy compatibility**: Historical SSH configurations often used longer grace periods for compatibility
+
+**Security Issues:**
+
+- **Brute force attack vulnerability**: Long grace periods provide more time for attackers to attempt multiple authentication attempts
+- **Resource exhaustion**: Extended grace periods allow more concurrent unauthenticated connections, potentially leading to DoS attacks
+- **Attack surface expansion**: Longer grace periods increase the window of opportunity for malicious activities
+- **Compliance violations**: Many security standards require appropriate grace period limits
+
+**Remediation Solutions:**
+
+1. **Configure SSH LoginGraceTime**:
+
+    ```bash
+    # Edit SSH configuration file
+    sudo nano /etc/ssh/sshd_config
+    
+    # Add or modify the following line
+    LoginGraceTime 60
+    
+    # Restart SSH service
+    sudo systemctl restart sshd
+    ```
+
+2. **Verify configuration**:
+
+    ```bash
+    # Check SSH configuration
+    sudo sshd -T | grep -i logingracetime
+    
+    # Test SSH connection with grace time
+    time ssh user@hostname
+    ```
+
+3. **Additional security measures**:
+
+    - Implement fail2ban or similar tools to block repeated failed attempts
+    - Monitor SSH authentication logs for suspicious activity
+    - Consider using SSH key-based authentication to reduce authentication time
+
+**Impact on Users:**
+
+- **Positive**: Reduces brute force attack risk, limits concurrent unauthenticated connections, improves security posture
+- **Negative**: May disconnect users who take longer than 60 seconds to authenticate, requires faster authentication
+- **Minimal disruption**: 60-second grace period provides reasonable time for normal authentication while limiting attack window
+
+**Security vs User Friendliness Balance:**
+
+The optimal approach is **configure with appropriate grace period**:
+
+- **Primary action**: Set LoginGraceTime to 60 seconds or less based on organizational policy
+- **Grace period calculation**: 60 seconds provides sufficient time for normal authentication while limiting attack opportunities
+- **Documentation**: Provide clear guidelines for SSH authentication timing and troubleshooting
+- **Monitoring**: Implement logging and alerting for authentication patterns and failures
+
+This approach prioritizes security by limiting the authentication grace period while maintaining reasonable usability for legitimate users who can authenticate within the specified timeframe.
+
+### 5.1.15 Ensure sshd MACs are configured
+
+**Analysis:**
+
+**Why OS left default configurations:**
+
+- **Service Reachability**: Default SSH configuration includes various MAC algorithms to ensure compatibility with different SSH clients
+- **User Friendliness**: Multiple MAC options prevent connection failures due to algorithm mismatches
+- **Ease-of-Use**: Default settings reduce configuration complexity and ensure broad compatibility
+- **Legacy compatibility**: Historical SSH configurations often included weak algorithms for backward compatibility
+
+**Security Issues:**
+
+- **Weak algorithm vulnerability**: Default configurations may include weak MAC algorithms that are vulnerable to attacks
+- **SSH downgrade attacks**: Weak algorithms can be exploited in man-in-the-middle attacks to downgrade security
+- **Cryptographic weaknesses**: MD5 and 96-bit MAC algorithms are considered weak and vulnerable to modern attacks
+- **Compliance violations**: Many security standards require the use of strong cryptographic algorithms
+
+**Remediation Solutions:**
+
+1. **Configure strong MAC algorithms**:
+
+    ```bash
+    # Edit SSH configuration file
+    sudo nano /etc/ssh/sshd_config
+    
+    # Add or modify the MACs line to exclude weak algorithms
+    MACs -hmac-md5,hmac-md5-96,hmac-ripemd160,hmac-sha1-96,umac-64@openssh.com,hmac-md5-etm@openssh.com,hmac-md5-96-etm@openssh.com,hmac-ripemd160-etm@openssh.com,hmac-sha1-96-etm@openssh.com,umac-64-etm@openssh.com
+    
+    # Restart SSH service
+    sudo systemctl restart sshd
+    ```
+
+2. **Verify configuration**:
+
+    ```bash
+    # Check SSH configuration
+    sudo sshd -T | grep -i macs
+    
+    # Test SSH connection
+    ssh -v user@hostname
+    ```
+
+3. **Additional security measures**:
+
+    - Monitor SSH logs for algorithm negotiation failures
+    - Implement fail2ban to block repeated failed attempts
+    - Consider using SSH key-based authentication for better security
+
+**Impact on Users:**
+
+- **Positive**: Prevents weak algorithm attacks, improves cryptographic security, reduces attack surface
+- **Negative**: May break connections with older SSH clients that only support weak algorithms
+- **Minimal disruption**: Modern SSH clients support strong algorithms, so impact should be minimal
+
+**Security vs User Friendliness Balance:**
+
+The optimal approach is **configure with strong algorithms only**:
+
+- **Primary action**: Exclude weak MAC algorithms and use only FIPS 140 approved algorithms
+- **Algorithm selection**: Use HMAC-SHA1, HMAC-SHA2-256, HMAC-SHA2-384, HMAC-SHA2-512
+- **Documentation**: Provide clear guidelines for SSH client compatibility
+- **Monitoring**: Implement logging and alerting for algorithm negotiation failures
+
+This approach prioritizes security by using only strong cryptographic algorithms while maintaining compatibility with modern SSH clients.
+
+### 5.1.16 Ensure sshd MaxAuthTries is configured
+
+**Analysis:**
+
+**Why OS left default configurations:**
+
+- **Service Reachability**: Default SSH configuration allows multiple authentication attempts to accommodate user errors
+- **User Friendliness**: Higher retry limits prevent users from being locked out due to typos or temporary issues
+- **Ease-of-Use**: Default settings reduce the likelihood of authentication failures due to user mistakes
+- **Legacy compatibility**: Historical SSH configurations often used higher retry limits for compatibility
+
+**Security Issues:**
+
+- **Brute force attack vulnerability**: High retry limits provide more opportunities for attackers to attempt password guessing
+- **Resource exhaustion**: Multiple failed attempts can consume server resources
+- **Attack surface expansion**: Higher retry limits increase the window of opportunity for malicious activities
+- **Compliance violations**: Many security standards require appropriate retry limits
+
+**Remediation Solutions:**
+
+1. **Configure SSH MaxAuthTries**:
+
+    ```bash
+    # Edit SSH configuration file
+    sudo nano /etc/ssh/sshd_config
+    
+    # Add or modify the following line
+    MaxAuthTries 4
+    
+    # Restart SSH service
+    sudo systemctl restart sshd
+    ```
+
+2. **Verify configuration**:
+
+    ```bash
+    # Check SSH configuration
+    sudo sshd -T | grep -i maxauthtries
+    
+    # Test SSH connection with multiple failed attempts
+    ssh user@hostname
+    ```
+
+3. **Additional security measures**:
+
+    - Implement fail2ban or similar tools to block repeated failed attempts
+    - Monitor SSH authentication logs for suspicious activity
+    - Consider using SSH key-based authentication to reduce authentication attempts
+
+**Impact on Users:**
+
+- **Positive**: Reduces brute force attack risk, limits authentication attempts, improves security posture
+- **Negative**: May lock out users who make multiple typos, requires more careful authentication
+- **Minimal disruption**: 4 attempts provide reasonable allowance for user errors while limiting attack opportunities
+
+**Security vs User Friendliness Balance:**
+
+The optimal approach is **configure with appropriate retry limits**:
+
+- **Primary action**: Set MaxAuthTries to 4 or less based on organizational policy
+- **Retry limit calculation**: 4 attempts provide sufficient allowance for user errors while limiting attack opportunities
+- **Documentation**: Provide clear guidelines for SSH authentication and troubleshooting
+- **Monitoring**: Implement logging and alerting for authentication patterns and failures
+
+This approach prioritizes security by limiting authentication attempts while maintaining reasonable usability for legitimate users who can authenticate within the specified number of attempts.
 
 ## Contribution Table
 
