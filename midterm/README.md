@@ -1,7 +1,7 @@
 # 2025 Network Security Midterm Report
 
-- [Homework 1](#homework-1----kali-linux-and-nycu-security-policy)
-- [Homework 2](#homework-2---encrypt-and-decrypt-a-file)
+- [Homework 1 -  Kali Linux and NYCU Security Policy](#homework-1----kali-linux-and-nycu-security-policy)
+- [Homework 2 - Encrypt and Decrypt A File](#homework-2---encrypt-and-decrypt-a-file)
 
     - [Build](#build)
     - [Encrypt](#encrypt)
@@ -11,6 +11,7 @@
     - [Demo](#demo)
     - [HW2 Contribution Table](#hw2-contribution-table)
 
+- [Homework 3]
 
 ## Homework 1 -  Kali Linux and NYCU Security Policy
 
