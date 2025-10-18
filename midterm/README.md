@@ -27,6 +27,41 @@
 
 - [Homework 5 - CIS-CAT Report](#homework-5---cis-cat-report)
 
+    - [1 Initial Setup](#1-initial-setup)
+
+        - [1.1.1.1 Ensure cramfs kernel module is not available](#1111-ensure-cramfs-kernel-module-is-not-available)
+        - [1.1.1.2 Ensure freevxfs kernel module is not available](#1112-ensure-freevxfs-kernel-module-is-not-available)
+        - [1.1.1.3 Ensure hfs kernel module is not available](#1113-ensure-hfs-kernel-module-is-not-available)
+        - [1.1.1.4 Ensure hfsplus kernel module is not available](#1114-ensure-hfsplus-kernel-module-is-not-available)
+
+    - [2 Services](#2-services)
+
+        - [2.1.13 Ensure rsync services are not in use](#2113-ensure-rsync-services-are-not-in-use)
+        - [2.2.4 Ensure telnet client is not installed](#224-ensure-telnet-client-is-not-installed)
+        - [2.2.6 Ensure ftp client is not installed](#226-ensure-ftp-client-is-not-installed)
+        - [2.3.2.1 Ensure systemd-timesyncd configured with authorized timeserver](#2321-ensure-systemd-timesyncd-configured-with-authorized-timeserver)
+
+    - [3 Network](#3-network)
+
+        - [3.3.1 Ensure ip forwarding is disabled](#331-ensure-ip-forwarding-is-disabled)
+        - [3.3.2 Ensure packet redirect sending is disabled](#332-ensure-packet-redirect-sending-is-disabled)
+        - [3.3.5 Ensure icmp redirects are not accepted](#335-ensure-icmp-redirects-are-not-accepted)
+        - [3.3.11 Ensure ipv6 router advertisements are not accepted](#3311-ensure-ipv6-router-advertisements-are-not-accepted)
+
+    - [4 Host Based Firewall](#4-host-based-firewall)
+
+        - [4.2.4 Ensure ufw service is enabled](#424-ensure-ufw-service-is-enabled)
+        - [4.2.5 Ensure ufw loopback traffic is configured](#425-ensure-ufw-loopback-traffic-is-configured)
+        - [4.2.7 Ensure ufw firewall rules exist for all open ports](#427-ensure-ufw-firewall-rules-exist-for-all-open-ports)
+        - [4.2.8 Ensure ufw default deny firewall policy](#428-ensure-ufw-default-deny-firewall-policy)
+
+    - [5 Access Control](#5-access-control)
+
+        - [5.1.7 Ensure sshd ClientAliveInterval and ClientAliveCountMax are configured](#517-ensure-sshd-clientaliveinterval-and-clientalivecountmax-are-configured)
+        - [5.1.13 Ensure sshd LoginGraceTime is configured](#5113-ensure-sshd-logingracetime-is-configured)
+        - [5.1.15 Ensure sshd MACs are configured](#5115-ensure-sshd-macs-are-configured)
+        - [5.1.16 Ensure sshd MaxAuthTries is configured](#5116-ensure-sshd-maxauthtries-is-configured)
+
 ## Homework 1 -  Kali Linux and NYCU Security Policy
 
 In this homework, we installed a Kali Linux system, and learn how to configure VM with virtual box for windows users and VMware for Mac users, like this:
