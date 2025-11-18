@@ -207,8 +207,8 @@ Nmap done: 1 IP address (1 host up) scanned in 190.14 seconds
 
 | Student ID | Works | Percentage |
 | - | - | - |
-| 314581015 | L0-M1 | 40% |
+| 314581015 | L0-M1 | 35% |
 | 313581047 | L2-M1 | 30% |
-| 313581038 | scanning | 10% |
-| 313581055 | scanning | 10% |
-| 412581005 | scanning | 10% |
+| 313581038 | scanning | 15% |
+| 313581055 | scanning | 15% |
+| 412581005 | scanning | 15% |
