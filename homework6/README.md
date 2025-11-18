@@ -84,3 +84,11 @@
     ![it3](it3.png)
 
     (hunter)
+
+| Student ID | Works | Percentage |
+| - | - | - |
+| 314581015 | summary | 20% |
+| 313581047 | re-format | 20% |
+| 313581038 | survey | 20% |
+| 313581055 | survey | 20% |
+| 412581005 | survey | 20% |
