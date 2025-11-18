@@ -53,3 +53,5 @@ git clone https://github.com/Alonza0314/2025-NYCU-NetworkSecurity.git
 - [Homework4](homework4/README.md)
 - [Homework5](homework5/README.md)
 - [Midterm](midterm/README.md)
+
+- [homework6](homework6/README.md)
