@@ -5,7 +5,7 @@
 Scanning result:
 
 ```bash
-┌──(alonza㉿kali)-[~]
+┌──(xin㉿kali)-[~]
 └─$ nmap -p- -sV 172.16.0.38 -oN fullscan.txt
 Starting Nmap 7.95 ( https://nmap.org ) at 2025-11-17 22:15 HST
 Nmap scan report for 172.16.0.38
