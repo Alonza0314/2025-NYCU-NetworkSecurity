@@ -36,7 +36,7 @@
     ```
     sudo airmon-ng start <interface_name> (e.g., wlan1)
     ```
-    ![airmon-ng start](./images/airmon-ng start.jpg)
+    ![airmon-ng_start](./images/airmon-ng_start.jpg)
 4. Verify that the monitor interface is successfully enabled
     ```
     iwconfig
@@ -46,7 +46,7 @@
     ```
     sudo airodump-ng wlan1mon
     ```
-    
+    ![Shadow IT](./images/Shadow-IT.jpg)
 6. Stop monitor mode and restart services
     ```
     sudo airmon-ng stop wlan1mon 
@@ -54,9 +54,9 @@
     sudo airmon-ng check kill 
     ```
     
-### dome & result:
-![Shadow IT](./images/Shadow IT.jpg)
-![Shadow IT_Table](./images/Shadow IT_Table.jpg)
+### result:
+
+![Shadow IT_Table](./images/Shadow-IT_Table.jpg)
 
 
 ## Fake AP and MITM Attack
