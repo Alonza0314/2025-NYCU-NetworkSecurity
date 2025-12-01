@@ -16,7 +16,7 @@
     - [Result](#Result)
 
 
-## USE LiveUSB Method
+## USE LiveUSB
 
 ### Hardare
 - ALFA AWUS036ACM (MediaTek MT7610U/MT7612U)
