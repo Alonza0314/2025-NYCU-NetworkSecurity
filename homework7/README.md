@@ -1,7 +1,7 @@
 # Homework 7
 
 ## Table of contents
-- [USE LiveUSB Method](#USE-LiveUSB-Method)
+- [USE LiveUSB](#USE-LiveUSB)
     - [Hardare](#Hardare)
     - [Set & Open LiveUSB](#Set-Open-LiveUSB)
 
