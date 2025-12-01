@@ -3,7 +3,7 @@
 ## Table of contents
 - [USE LiveUSB](#use-liveusb)
     - [Hardare](#hardare)
-    - [Set & Open LiveUSB](#set-open-liveusb)
+    - [Set And Open LiveUSB](#set-and-open-liveusb)
 
 - [Task1: Shadow IT](#task1-shadow-it)
     - [Step](#step)
@@ -21,7 +21,7 @@
 ### Hardare
 - ALFA AWUS036ACM (MediaTek MT7610U/MT7612U)
 
-### Set & Open LiveUSB
+### Set And Open LiveUSB
 - download [download kali-linux-2025.3-live-amd64.iso](https://www.kali.org/get-kali/#kali-live)
 - use [download rufus-4.11.exe](https://rufus.ie/zh_TW/) store kali-linux in USB
 - open host BIOS 
