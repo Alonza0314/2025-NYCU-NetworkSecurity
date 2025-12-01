@@ -11,7 +11,7 @@
 
 - [Task2: Fake AP and MITM Attack](#task2-fake-ap-and-mitm-attack)
     - [Set hostapd](#set-hostapd)
-    - [Set DHCP](#set-dhcp)
+    - [Set DHCP & MiTM attack Tool](#set-dhcp)
     - [MITM Attack](#mitm-attack)
     - [Result](#result-task2)
 
