@@ -1,15 +1,29 @@
 # Homework 7
 
-## method LiveUSB
-- [download kali-linux-2025.3-live-amd64.iso](https://www.kali.org/get-kali/#kali-live)
-- [download rufus-4.11.exe](https://rufus.ie/zh_TW/)
+## Table of contents
+- [USE LiveUSB Method](#USE-LiveUSB-Method)
+    - [Hardare](#Hardare)
+    - [Set & Open LiveUSB](#Set-Open-LiveUSB)
 
-## hardare
+- [Task1: Shadow IT](#Task1-Shadow-IT)
+    - [Step](#Step)
+    - [Result](#Result)
+
+- [Task2: Fake AP and MITM Attack](#Task2-Fake-AP-and-MITM-Attack)
+    - [Set hostapd](#Set-hostapd)
+    - [Set DHCP](#Set-DHCP)
+    - [MITM Attack](#MITM-Attack)
+    - [Result](#Result)
+
+
+## USE LiveUSB Method
+
+### Hardare
 - ALFA AWUS036ACM (MediaTek MT7610U/MT7612U)
 
-## Set & Open LiveUSB
-- download kali-linux-2025.3-live-amd64.iso
-- use rufus.exe store kali-linux in USB
+### Set & Open LiveUSB
+- download [download kali-linux-2025.3-live-amd64.iso](https://www.kali.org/get-kali/#kali-live)
+- use [download rufus-4.11.exe](https://rufus.ie/zh_TW/) store kali-linux in USB
 - open host BIOS 
     - BOOT ->  BOOT Order
         - find [XXX flash] 
@@ -18,9 +32,10 @@
 - ativate kali linux on host
 - check network connection
 
+
 ## Task1: Shadow IT
 
-### Step:
+### Step
 
 1: Check interface names and status
 ```
@@ -57,6 +72,10 @@ sudo airmon-ng stop wlan1mon
 sudo service NetworkManager start 
 sudo airmon-ng check kill 
 ```
+
+### Result
+![Shadow-IT_Table](./images/Shadow-IT_Table.jpg)
+
 ## Task2: Fake AP and MITM Attack
 
 Prerequisites
@@ -178,5 +197,6 @@ In Wireshark GUI, click the red square button to stop capturing.
 ```
 http.request.method == "POST"
 ```
-### result
+
+### Result
 ![MITM_Attack_result](./images/MITM_Attack_result.jpg)
