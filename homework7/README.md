@@ -55,8 +55,7 @@
     ```
     
 ### result:
-
-![Shadow IT_Table](./images/Shadow-IT_Table.jpg)
+  ![Shadow IT_Table](./images/Shadow-IT_Table.jpg)
 
 
 ## Fake AP and MITM Attack
