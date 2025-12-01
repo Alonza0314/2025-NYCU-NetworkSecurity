@@ -1,18 +1,18 @@
 # Homework 7
 
 ## Table of contents
-- [USE LiveUSB](#USE-LiveUSB)
-    - [Hardare](#Hardare)
-    - [Set & Open LiveUSB](#Set-Open-LiveUSB)
+- [USE LiveUSB](#use-liveusb)
+    - [Hardare](#hardare)
+    - [Set & Open LiveUSB](#set-open-liveusb)
 
-- [Task1: Shadow IT](#Task1-Shadow-IT)
-    - [Step](#Step)
+- [Task1: Shadow IT](#task1-shadow-it)
+    - [Step](#step)
     - [Result](#result-task1)
 
-- [Task2: Fake AP and MITM Attack](#Task2-Fake-AP-and-MITM-Attack)
-    - [Set hostapd](#Set-hostapd)
-    - [Set DHCP](#Set-DHCP)
-    - [MITM Attack](#MITM-Attack)
+- [Task2: Fake AP and MITM Attack](#task2-fake-ap-and-mitm-attack)
+    - [Set hostapd](#set-hostapd)
+    - [Set DHCP](#set-dhcp)
+    - [MITM Attack](#mitm-attack)
     - [Result](#result-task2)
 
 
@@ -200,3 +200,13 @@ http.request.method == "POST"
 
 ### Result <a id="result-task2"></a>
 ![MITM_Attack_result](./images/MITM_Attack_result.jpg)
+
+## Contribution Table
+
+| Student ID | Works | Percentage |
+| - | - | - |
+| 314581015 | L0-M1 | 20% |
+| 313581047 | L2-M1 | 20% |
+| 313581038 | L0-M2 | 20% |
+| 313581055 | L0-M3 | 20% |
+| 412581005 | L1-x | 20% |
