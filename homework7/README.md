@@ -32,21 +32,25 @@ ip a || iwconfig (e.g., wlan0、1)
 ```
 sudo airmon-ng check kill
 ```
+
 3: Enable monitor mode on the interface
 ```
 sudo airmon-ng start <interface_name> (e.g., wlan1)
 ```
 ![airmon-ng_start](./images/airmon-ng_start.jpg)
+
 4: Verify that the monitor interface is successfully enabled
 ```
 iwconfig
 ```
 ![iwconfig_2](./images/iwconfig_2.jpg)
+
 5: Perform wireless network scanning
 ```
 sudo airodump-ng wlan1mon
 ```
 ![Shadow IT](./images/Shadow-IT.jpg)
+
 6: Stop monitor mode and restart services
 ```
 sudo airmon-ng stop wlan1mon 
