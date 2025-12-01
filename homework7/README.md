@@ -41,7 +41,7 @@
     ```
     iwconfig
     ```
-    ![iwconfig_2](./images/iwconfig_2.jpg)
+    ![iwconfig_2]("./images/iwconfig_2.jpg")
 5. Perform wireless network scanning
     ```
     sudo airodump-ng wlan1mon
